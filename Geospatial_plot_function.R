@@ -157,6 +157,9 @@ map <- leaflet() %>%
 map
 ###### Making interactive map ####
 spdf$value
+
+#### START OF WORKING CODE ####
+## IMP NOTE: Add list of the packages and library commands here in sequence. Probably it is in Office RStudio. Copy from there to save your time.
 #### GEOSPATIAL PLOT FUNCTION ####
 #### Above code of statics and interactive plot for Co2: VERY IMP Daily data, .nc4 files, ongoing since 1st June 2014: 
 
@@ -166,7 +169,7 @@ geospatial_plot <- function(file_path)
 nc_data <- nc_open(file_path)
 # Save the print(nc) dump to a text file
 {
-  sink(paste0(path,'oco2_GEOS_L3CO2_day_20220228_B10206Ar.txt'))
+  sink(paste0(path,'Text_last.txt'))
   print(nc_data)
   sink()
 }
@@ -199,18 +202,41 @@ dim(CO2)
 r <- raster(t(CO2), xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat), crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
 r <- flip(r, direction='y')
 par(mfrow = c(1,1))
-plot(r,main = "CO2")
+pal <- colorRampPalette(c("green4","green3","yellow","orange","red"))
 
+plot(r,ylab = "Latitude", xlab = "Longitude", main = "CO2",col = pal(50))
 
+#library(graphics)
+#z1 <- CO2
+#persp(x = lat, y = lon, z = z3)
 }
 
 path <- "/Users/jyotibhogal/Downloads/"
-file_path <- paste0(path,"oco2_GEOS_L3CO2_day_20220228_B10206Ar.nc4")
+#file_path <- paste0(path,"oco2_GEOS_L3CO2_day_20220228_B10206Ar.nc4")
+
+#file_path <- "https://oco2.gesdisc.eosdis.nasa.gov/data//OCO2_DATA/OCO2_GEOS_L3CO2_DAY.10r/2015/oco2_GEOS_L3CO2_day_20150101_B10206Ar.nc4"
+
+#file_name_csv <- read.csv("/Users/jyotibhogal/Downloads/File Names_2015_to_2022 - Sheet1.csv")
+file_name_csv <- read.csv("/Users/jyotibhogal/Downloads/File Names_Feb_2022 - Sheet1.csv")
+
+file_name <- file_name_csv$File.Name
+len_file_name <- length(file_name)
+for(count in 1:len_file_name)
+{
+  file_name_count <- file_name[count]
+  file_path <-paste0(path,file_name_count)
+  #par(mfrow=c(7,4))
 geospatial_plot(file_path = file_path)
+Sys.sleep(1)
+}
+
+#path <- "https://oco2.gesdisc.eosdis.nasa.gov/data//OCO2_DATA/OCO2_GEOS_L3CO2_DAY.10r/2015/oco2_GEOS_L3CO2_day_20150101_B10206Ar.nc4"
+#library(ncdf4)
+#NC <- nc_open(path,return_on_error = TRUE)
+#?nc_open
 
 
-
-
+#### END OF WORKING CODE ####
 
 #### MAKING INTERACTIVE PLOTS IN R ####
 
