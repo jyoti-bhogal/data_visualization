@@ -36,7 +36,7 @@ library(sp)
 library(raster) # package for raster manipulation
 
 # User defined function 'geospatial_plot' 
-# Input: path of th e.nc4 or .netCDF file which contains the values of the variable of interest
+# Input: path of the .nc4 or .netCDF file which contains the values of the variable of interest
 # Output: 2-D geospatial plot of the variable of interest 
 
 geospatial_plot <- function(file_path)
