@@ -62,7 +62,7 @@ geospatial_plot <- function(file_path)
   d4 <- d0[2]
   # To convert the months from month number to month name 
   # Note: the month numbers are mentioned within double quotes because their data 
-  type or class is 'character' rather than 'numeric' 
+  # type or class is 'character' rather than 'numeric' 
   month <- ifelse(d4=="01","Jan",ifelse(d4=="02","Feb",ifelse(d4=="03","Mar",
               ifelse(d4=="04","Apr",ifelse(d4=="05","May",ifelse(d4=="06","Jun",
           ifelse(d4=="07","Jul",ifelse(d4=="08","Aug",ifelse(d4=="09","Sep",
