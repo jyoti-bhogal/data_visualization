@@ -6,29 +6,31 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("rhdf5")
 
-library(rhdf5)
 install.packages("hdf5r")
-library(hdf5r)
 install.packages("rgdal")
-library(rgdal) # package for geospatial analysis
 install.packages("markovchain")
+install.packages("hdf5")
+install.packages("rhdf5")
+install.packages("leaflet")
+install.packages(c("sf", "rnaturalearth", "rnaturalearthdata"))
+install.packages(c("stringr","stringi"))
+install.packages("ncdf4")
+
+
+library(rhdf5)
+library(hdf5r)
+library(rgdal) # package for geospatial analysis
 library(markovchain)
 library(ggplot2) # package for plotting
-install.packages("hdf5")
 library(hdf5)
-install.packages("rhdf5")
 library(rhdf5)
-install.packages("leaflet")
 library(leaflet)
 library(dplyr)
-install.packages(c("sf", "rnaturalearth", "rnaturalearthdata"))
 library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
-install.packages(c("stringr","stringi"))
 library(stringi)
 library(stringr)
-install.packages("ncdf4")
 library(ncdf4)
 library(sp)
 library(raster) # package for raster manipulation
