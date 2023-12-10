@@ -35,6 +35,8 @@ library(ncdf4)
 library(sp)
 library(raster) # package for raster manipulation
 
+# After installing essential libraries, define the function 'geospatial_plot'
+
 # User defined function 'geospatial_plot' 
 # Input: path of the .nc4 or .netCDF file which contains the values of the variable of interest
 # Output: 2-D geospatial plot of the variable of interest 
