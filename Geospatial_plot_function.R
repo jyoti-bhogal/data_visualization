@@ -1,26 +1,14 @@
 #### Interactive Time Series Plots ####
 
-# Installing and loading essential R packages
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
+## Setting up a CRAN mirror
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
 
-BiocManager::install("rhdf5")
-
-library(rhdf5)
-install.packages("hdf5r")
-library(hdf5r)
-install.packages("rgdal")
-library(rgdal) # package for geospatial analysis
+##  Installing and loading essential R packages
 install.packages("markovchain")
 library(markovchain)
-install.packages("ggplot2)
+install.packages("ggplot2")
 library(ggplot2) # package for plotting
-install.packages("hdf5")
-library(hdf5)
-install.packages("rhdf5")
-library(rhdf5)
-install.packages("leaflet")
-library(leaflet)
+install.packages("dplyr")
 library(dplyr)
 install.packages(c("sf", "rnaturalearth", "rnaturalearthdata"))
 library(sf)
@@ -37,9 +25,11 @@ install.packages("dygraphs") # to create interactive time series
 library(dygraphs)
 install.packages("xts") # create time series objects (class xs)
 library(xts)
+install.packages("tidyverse")
+library(tidyverse)
 
+## User defined function 'geospatial_plot' 
 
-# User defined function 'geospatial_plot' 
 # Input: path of th e.nc4 or .netCDF file which contains the values of the variable of interest
 # Output: 
 ### 1) Global average, global north average, and global south average of daily assimilated CO2 values
@@ -70,20 +60,20 @@ geospatial_plot <- function(file_path)
   # Note: the month numbers are mentioned within double quotes because their data 
   # type or class is 'character' rather than 'numeric' 
   month <- ifelse(d4=="01","Jan",ifelse(d4=="02","Feb",ifelse(d4=="03","Mar",
-              ifelse(d4=="04","Apr",ifelse(d4=="05","May",ifelse(d4=="06","Jun",
-          ifelse(d4=="07","Jul",ifelse(d4=="08","Aug",ifelse(d4=="09","Sep",
-                ifelse(d4=="10","Oct",ifelse(d4=="11","Nov","Dec")))))))))))
+                                                              ifelse(d4=="04","Apr",ifelse(d4=="05","May",ifelse(d4=="06","Jun",
+                                                                                                                 ifelse(d4=="07","Jul",ifelse(d4=="08","Aug",ifelse(d4=="09","Sep",
+                                                                                                                                                                    ifelse(d4=="10","Oct",ifelse(d4=="11","Nov","Dec")))))))))))
   
   # To extract the name of the variable of interest
   title <- nc_data$var$XCO2$longname
   
-
+  
   # To extract the values of latitude, longitude, and time from the .netCDF file
   lon <- ncvar_get(nc_data, "lon")
   lat <- ncvar_get(nc_data, "lat")
   t <- ncvar_get(nc_data, "time")
   
-
+  
   # To extract the values of the variable of interest
   CO2 <- ncvar_get(nc_data, "XCO2")
   
@@ -106,19 +96,20 @@ geospatial_plot <- function(file_path)
   # 'r' consists the values of the variable of interest for each combination of 
   # the latitude and longitude values
   r <- raster(t(CO2), xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat), 
-    crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
-  # To orient the rater object properly
+              crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
+  # To orient the raster object properly
   r <- flip(r, direction='y')
   # To define a color palette for the geospatial plot of the variable of interest 
   pal <- colorRampPalette(c("green4","green3","yellow","orange","red"))
   
-  plot(r,ylab = "Latitude", xlab = "Longitude", main = paste(title,"for",'\n',month,year),col = pal(50))
+  ## Please uncomment the following chunk to see the world maps for the daily 
+  ## values of assimalted CO2 for each region across the globe.
+  # plot(r,ylab = "Latitude", xlab = "Longitude", main = paste(title,"for",'\n',month,year),col = pal(50))
   # To store the international boundaries into a object of class 'sf', which is 'simple feature'
-  world <- ne_countries(scale = "medium", returnclass = "sf")
+  #world <- ne_countries(scale = "medium", returnclass = "sf")
   # To add the international boundaries on the previous plot
-  plot(st_geometry(world), add = TRUE, border = "black")
+  #plot(st_geometry(world), add = TRUE, border = "black")
   return(list(mean_CO2_global,mean_CO2_north,mean_CO2_south))
-  
 }
 
 # To run the above function 'geospatial_plot()' for the datasets available from the URL for NASA Earth Observation Data:
@@ -185,11 +176,10 @@ timeSeries_global <- cbind(timeSeries_global, South = timeSeries_south$`Global S
 
 
 
-library(tidyverse)
 # to create a interactive time series plot
 luminous_palette <- c("#3498db", "#e74c3c", "#2ecc71", "#f39c12")
 
-interact_time2 <- dygraph(timeSeries_global,main = "Global Average CO2 Assimilated") %>%
+interact_time <- dygraph(timeSeries_global,main = "Global Average CO2 Assimilated") %>%
   dyRangeSelector() %>%
   dyAxis("x",label = "Time")%>%
   dyAxis("y", label = "CO2 Levels") %>%
@@ -204,4 +194,11 @@ interact_time2 <- dygraph(timeSeries_global,main = "Global Average CO2 Assimilat
               hideOnMouseOut = TRUE)
 
   
-interact_time2
+interact_time
+
+
+# In this time series plot, please move your cursor to look at the different (x,y) 
+# coordinates which represent the date and the global averages of the daily 
+# assimilated CO2 values. At the bottom of the plot, one can see a time range 
+# selector. This can be used to zoom in/zoom out to look at the values of CO2 
+# for a specific time period.
