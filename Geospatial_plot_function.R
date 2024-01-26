@@ -13,6 +13,7 @@ install.packages("rgdal")
 library(rgdal) # package for geospatial analysis
 install.packages("markovchain")
 library(markovchain)
+install.packages("ggplot2)
 library(ggplot2) # package for plotting
 install.packages("hdf5")
 library(hdf5)
